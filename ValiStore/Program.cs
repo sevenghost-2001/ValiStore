@@ -3,13 +3,13 @@ using ValiStore.Models;
 using ValiStore.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
-Console.WriteLine($"Chuỗi Kết Nối: {builder}");
+//Console.WriteLine($"Chuỗi Kết Nối: {builder}");
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-var connectionString = builder.Configuration.GetConnectionString("QLBanVaLiContext");
+//var connectionString = builder.Configuration.GetConnectionString("QLVaLi");
 
-builder.Services.AddDbContext<QLBanVaLiContext>(x => x.UseSqlServer(connectionString));
+builder.Services.AddDbContext<QLBanVaLiContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("QLVaLi")));
 
 builder.Services.AddScoped<ILoaiSpRepository, LoaiSpRepository>();
 var app = builder.Build();
