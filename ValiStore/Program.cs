@@ -1,8 +1,17 @@
-var builder = WebApplication.CreateBuilder(args);
+﻿using Microsoft.EntityFrameworkCore;
+using ValiStore.Models;
+using ValiStore.Repository;
 
+var builder = WebApplication.CreateBuilder(args);
+Console.WriteLine($"Chuỗi Kết Nối: {builder}");
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+var connectionString = builder.Configuration.GetConnectionString("QLBanVaLiContext");
+
+builder.Services.AddDbContext<QLBanVaLiContext>(x => x.UseSqlServer(connectionString));
+
+builder.Services.AddScoped<ILoaiSpRepository, LoaiSpRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
