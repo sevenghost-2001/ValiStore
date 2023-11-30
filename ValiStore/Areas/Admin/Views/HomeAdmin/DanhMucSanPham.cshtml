@@ -11,6 +11,7 @@
 <p>
     <a asp-action="ThemSanPhamMoi">Create New</a>
 </p>
+<p>@TempData["Message"]</p>
 <table class="table">
     <thead>
         <tr class="table-warning">
@@ -70,9 +71,9 @@
             </td>
             
             <td>
-                <a asp-action="Edit" asp-route-id="@item.MaSp">Edit</a> |
+                <a asp-action="SuaSanPham" asp-route-maSanPham="@item.MaSp">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.MaSp">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.MaSp">Delete</a>
+                    <a asp-action="XoaSanPham" asp-route-maSanPham="@item.MaSp">Delete</a>
             </td>
         </tr>
 }
