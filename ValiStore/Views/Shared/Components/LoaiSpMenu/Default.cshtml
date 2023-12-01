@@ -12,3 +12,21 @@
         </ul>
     </div>
 </div>
+@*<script>
+    function showProductByCaategory(getUrl){
+        var str='';
+        $.ajax({
+            type:'GET',
+            url: getUrl,
+            dataType:'json',
+            success:function(data){
+                $.each(data,function(key,val){
+                    str+='<p>'+val.tenSp+'</p>'
+                })
+            }
+            Error:function(xhr){
+                alert(xhr.response.Text)
+            }
+        })
+    }
+</script>*@
