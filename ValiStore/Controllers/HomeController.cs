@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using ValiStore.Models;
+using ValiStore.Models.Authentication;
 using X.PagedList;
 
 namespace ValiStore.Controllers
@@ -15,7 +16,7 @@ namespace ValiStore.Controllers
         {
             _logger = logger;
         }
-
+        [Authentication]
         public IActionResult Index(int? page)
         {
             int pageSize = 8;
