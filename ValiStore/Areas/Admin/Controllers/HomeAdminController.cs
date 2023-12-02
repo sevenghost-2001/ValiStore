@@ -81,17 +81,83 @@ namespace ValiStore.Areas.Admin.Controllers
         {
             TempData["Message"] = "";
             var chiTietSanPham = db.TChiTietSanPhams.Where(x => x.MaSp == maSanPham).ToList();
-            if(chiTietSanPham.Count() > 0)
+            if (chiTietSanPham.Count() > 0)
             {
                 TempData["Message"] = "Không xóa được sản phẩm này";
                 return RedirectToAction("DanhMucSanPham", "HomeAdmin");
             }
-            var anhSanPhams = db.TAnhSps.Where(x => x.MaSp== maSanPham);
-            if(anhSanPhams.Any()) db.RemoveRange(anhSanPhams);
+            var anhSanPhams = db.TAnhSps.Where(x => x.MaSp == maSanPham);
+            if (anhSanPhams.Any()) db.RemoveRange(anhSanPhams);
             db.Remove(db.TDanhMucSps.Find(maSanPham));
             db.SaveChanges();
             TempData["Message"] = "Sản phẩm đã được xóa";
             return RedirectToAction("DanhMucSanPham", "HomeAdmin");
+        }
+        [Route("DanhSachLoaiSanPham")]
+        public IActionResult DanhSachLoaiSanPham(int? page)
+        {
+            int pageSize = 12;
+            int pageNumber = page == null || page < 0 ? 1 : page.Value;
+            var lstSanpham = db.TLoaiSps.AsNoTracking().OrderBy(x=>x.Loai);
+            PagedList<TLoaiSp> lst = new PagedList<TLoaiSp>(lstSanpham, pageNumber, pageSize);
+            return View(lst);
+        }
+        [Route("ThemLoaiMoi")]
+        [HttpGet]
+        public IActionResult ThemLoaiMoi()
+        {
+            return View();
+        }
+        [Route("ThemLoaiMoi")]
+        [HttpPost]
+        public IActionResult ThemLoaiMoi(TLoaiSp loaiSp)
+        {
+            if (ModelState.IsValid)
+            {
+                db.TLoaiSps.Add(loaiSp);
+                db.SaveChanges();
+                return RedirectToAction("DanhSachLoaiSanPham");
+            }
+            return View();
+        }
+        [Route("SuaLoaiSanPham")]
+        [HttpGet]
+        public IActionResult SuaLoaiSanPham(string maLoai)
+        {
+            var Loai = db.TDanhMucSps.Find(maLoai);
+            return View(Loai);
+        }
+        [Route("SuaLoaiSanPham")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SuaLoaiSanPham(TLoaiSp loaiSp)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(loaiSp).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("DanhSachLoaiSanPham", "HomeAdmin");
+            }
+            return View();
+        }
+        [Route("XoaLoaiSanPham")]
+        [HttpGet]
+        public IActionResult XoaLoaiSanPham(string maLoai)
+        {
+            TempData["Message"] = "";
+            var DanhMucSanPham = db.TDanhMucSps.Where(x => x.MaLoai == maLoai).ToList();
+            if (DanhMucSanPham.Count() > 0)
+            {
+                TempData["Message"] = "Không xóa được loại sản phẩm này";
+                return RedirectToAction("DanhSachLoaiSanPham", "HomeAdmin");
+            }
+            else
+            {
+                db.Remove(db.TLoaiSps.Find(maLoai));
+                db.SaveChanges();
+                TempData["Message"] = "Loại sản phẩm đã được xóa";
+                return RedirectToAction("DanhSachLoaiSanPham", "HomeAdmin");
+            }
         }
     }
 }

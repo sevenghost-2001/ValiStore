@@ -1,0 +1,56 @@
+﻿@*@model IEnumerable<ValiStore.Models.TLoaiSp>*@
+@using X.PagedList.Mvc.Core
+@using ValiStore.Models
+@model X.PagedList.IPagedList<TLoaiSp>
+@{
+    ViewData["Title"] = "DanhSachLoaiSanPham";
+    Layout = "~/Areas/Admin/Views/Shared/LayoutAdmin.cshtml";
+}
+@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHelpers
+<h1>DanhSachLoaiSanPham</h1>
+
+<p>
+    <a asp-action="ThemLoaiMoi">Create New</a>
+</p>
+<p>@TempData["Message"]</p>
+<table class="table">
+    <thead>
+        <tr class="table-warning">
+            <th>
+                Mã loại
+            </th>
+            <th>
+                Tên loại
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int i = 0;
+            String @cls = "table-success";
+        }
+@foreach (var item in Model) {
+            i = i + 1;
+            cls = "table-success";
+            if (i % 2 == 0)
+            {
+                cls = "table-primary";
+            }
+            <tr class ="@cls">
+            <td>
+                @Html.DisplayFor(modelItem => item.Loai)
+            </td>
+            <td>
+                    <a asp-action="SuaLoaiSanPham" asp-route-maLoai="@item.MaLoai">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.MaLoai">Details</a> |
+                <a asp-action="XoaLoaiSanPham" asp-route-maLoai="@item.MaLoai">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+@Html.PagedListPager(Model,page => Url.Action("DanhMucSanPham", new {page=page}), new X.PagedList.Web.Common.PagedListRenderOptions(){
+LiElementClasses = new List<String> {"page-item"},
+PageClasses = new List<String>{"page-link"}
+})
