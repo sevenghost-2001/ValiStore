@@ -159,5 +159,56 @@ namespace ValiStore.Areas.Admin.Controllers
                 return RedirectToAction("DanhSachLoaiSanPham", "HomeAdmin");
             }
         }
+        [Route("DanhsachKhachHang")]
+        public IActionResult DanhsachKhachHang(int? page)
+        {
+            int pageSize = 12;
+            int pageNumber = page == null || page < 0 ? 1 : page.Value;
+            var lstKhachHang = db.TKhachHangs.AsNoTracking().OrderBy(x => x.TenKhachHang);
+            PagedList<TKhachHang> lst = new PagedList<TKhachHang>(lstKhachHang, pageNumber, pageSize);
+            return View(lst);
+        }
+        [Route("ThemKhachHangMoi")]
+        [HttpGet]
+        public IActionResult ThemKhachHangMoi()
+        {
+            ViewBag.Username = new SelectList(db.TUsers.ToList(), "Username", "Username");
+            ViewBag.LoaiUser = new SelectList(db.TUsers.ToList(), "Username", "LoaiUser");
+            return View();
+        }
+        [Route("ThemKhachHangMoi")]
+        [HttpPost]
+        public IActionResult ThemKhachHangMoi(TKhachHang KhachHang)
+        {
+            if (ModelState.IsValid)
+            {
+                db.TKhachHangs.Add(KhachHang);
+                db.SaveChanges();
+                return RedirectToAction("DanhsachKhachHang");
+            }
+            return View();
+        }
+        [Route("SuaKhachHang")]
+        [HttpGet]
+        public IActionResult SuaKhachHang(string maKhachHang)
+        {
+            ViewBag.Username = new SelectList(db.TUsers.ToList(), "Username", "Username");
+            ViewBag.LoaiUser = new SelectList(db.TUsers.ToList(), "Username", "LoaiUser");
+            var KhachHang = db.TKhachHangs.Find(maKhachHang);
+            return View(KhachHang);
+        }
+        [Route("SuaKhachHang")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SuaKhachHang(TKhachHang KhachHang)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(KhachHang).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("DanhsachKhachHang", "HomeAdmin");
+            }
+            return View();
+        }
     }
 }
