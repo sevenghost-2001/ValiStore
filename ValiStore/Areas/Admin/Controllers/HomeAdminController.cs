@@ -173,7 +173,7 @@ namespace ValiStore.Areas.Admin.Controllers
         public IActionResult ThemKhachHangMoi()
         {
             ViewBag.Username = new SelectList(db.TUsers.ToList(), "Username", "Username");
-            ViewBag.LoaiUser = new SelectList(db.TUsers.ToList(), "Username", "LoaiUser");
+            //ViewBag.LoaiUser = new SelectList(db.TUsers.ToList(), "Username", "LoaiUser");
             return View();
         }
         [Route("ThemKhachHangMoi")]
@@ -193,7 +193,7 @@ namespace ValiStore.Areas.Admin.Controllers
         public IActionResult SuaKhachHang(string maKhachHang)
         {
             ViewBag.Username = new SelectList(db.TUsers.ToList(), "Username", "Username");
-            ViewBag.LoaiUser = new SelectList(db.TUsers.ToList(), "Username", "LoaiUser");
+            //ViewBag.LoaiUser = new SelectList(db.TUsers.ToList(), "Username", "LoaiUser");
             var KhachHang = db.TKhachHangs.Find(maKhachHang);
             return View(KhachHang);
         }
@@ -209,6 +209,24 @@ namespace ValiStore.Areas.Admin.Controllers
                 return RedirectToAction("DanhsachKhachHang", "HomeAdmin");
             }
             return View();
+        }
+        [Route("XoaKhachHang")]
+        [HttpGet]
+        public IActionResult XoaKhachHang(string maKhachHang)
+        {
+            TempData["Message"] = "";
+            //var chiTietSanPham = db.TChiTietSanPhams.Where(x => x.MaSp == maKhachHang).ToList();
+            //if (chiTietSanPham.Count() > 0)
+            //{
+            //    TempData["Message"] = "Không xóa được sản phẩm này";
+            //    return RedirectToAction("DanhsachKhachHang", "HomeAdmin");
+            //}
+            var anhDaiDien = db.TAnhSps.Where(x => x.MaSp == maKhachHang);
+            if (anhDaiDien.Any()) db.RemoveRange(anhDaiDien);
+            db.Remove(db.TKhachHangs.Find(maKhachHang));
+            db.SaveChanges();
+            TempData["Message"] = "Khách hàng đã được xóa";
+            return RedirectToAction("DanhsachKhachHang", "HomeAdmin");
         }
     }
 }
