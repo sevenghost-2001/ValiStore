@@ -228,5 +228,74 @@ namespace ValiStore.Areas.Admin.Controllers
             TempData["Message"] = "Khách hàng đã được xóa";
             return RedirectToAction("DanhsachKhachHang", "HomeAdmin");
         }
+        [Route("DanhsachNhanVien")]
+        public IActionResult DanhsachNhanVien(int? page)
+        {
+            int pageSize = 12;
+            int pageNumber = page == null || page < 0 ? 1 : page.Value;
+            var lstNhanVien = db.TNhanViens.AsNoTracking().OrderBy(x => x.TenNhanVien);
+            PagedList<TNhanVien> lst = new PagedList<TNhanVien>(lstNhanVien, pageNumber, pageSize);
+            return View(lst);
+        }
+        [Route("ThemNhanVienMoi")]
+        [HttpGet]
+        public IActionResult ThemNhanVienMoi()
+        {
+            ViewBag.Username = new SelectList(db.TUsers.ToList(), "Username", "Username");
+            //ViewBag.LoaiUser = new SelectList(db.TUsers.ToList(), "Username", "LoaiUser");
+            return View();
+        }
+        [Route("ThemNhanVienMoi")]
+        [HttpPost]
+        public IActionResult ThemNhanVienMoi(TNhanVien NhanVien)
+        {
+            if (ModelState.IsValid)
+            {
+                db.TNhanViens.Add(NhanVien);
+                db.SaveChanges();
+                return RedirectToAction("DanhsachNhanVien");
+            }
+            return View();
+        }
+        [Route("SuaNhanVien")]
+        [HttpGet]
+        public IActionResult SuaNhanVien(string maNhanVien)
+        {
+            ViewBag.Username = new SelectList(db.TUsers.ToList(), "Username", "Username");
+            //ViewBag.LoaiUser = new SelectList(db.TUsers.ToList(), "Username", "LoaiUser");
+            var NhanVien = db.TNhanViens.Find(maNhanVien);
+            return View(NhanVien);
+        }
+        [Route("SuaNhanVien")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SuaNhanVien(TNhanVien NhanVien)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(NhanVien).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("DanhsachNhanVien", "HomeAdmin");
+            }
+            return View();
+        }
+        [Route("XoaNhanVien")]
+        [HttpGet]
+        public IActionResult XoaNhanVien(string maNhanVien)
+        {
+            TempData["Message"] = "";
+            //var chiTietSanPham = db.TChiTietSanPhams.Where(x => x.MaSp == maKhachHang).ToList();
+            //if (chiTietSanPham.Count() > 0)
+            //{
+            //    TempData["Message"] = "Không xóa được sản phẩm này";
+            //    return RedirectToAction("DanhsachKhachHang", "HomeAdmin");
+            //}
+            //var anhDaiDien = db.TAnhSps.Where(x => x.MaSp == maNhanVien);
+            //if (anhDaiDien.Any()) db.RemoveRange(anhDaiDien);
+            db.Remove(db.TNhanViens.Find(maNhanVien));
+            db.SaveChanges();
+            TempData["Message"] = "Nhân viên đã được xóa";
+            return RedirectToAction("DanhsachNhanVien", "HomeAdmin");
+        }
     }
 }
