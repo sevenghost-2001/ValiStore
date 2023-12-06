@@ -863,8 +863,13 @@ ol {
 	overflow: hidden;
 	background-position: center center;
 }
-
-.featured__item__pic__hover {
+.card {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border:none;
+}
+/*.featured__item__pic__hover {
 	position: absolute;
 	left: 0;
 	bottom: -50px;
@@ -924,7 +929,7 @@ ol {
 	-o-transition: all, 0.3s;
 	transition: all, 0.3s;
 }
-
+*/
 .featured__item__text {
 	text-align: center;
 	padding-top: 15px;

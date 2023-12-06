@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Packaging.Signing;
+using ValiStore.Extention;
 using ValiStore.Models;
 using X.PagedList;
 
@@ -40,12 +42,20 @@ namespace ValiStore.Areas.Admin.Controllers
         }
         [Route("ThemSanPhamMoi")]
         [HttpPost]
-        public IActionResult ThemSanPhamMoi(TDanhMucSp sanPham)
+        public async Task<IActionResult> ThemSanPhamMoi(TDanhMucSp sanPham, IFormFile file)
         {
             if (ModelState.IsValid)
             {
+                if (file != null)
+                {
+                    sanPham.AnhDaiDien = await UploadFile.UploadFileImage(file, @"Images", file.FileName);
+                }
+                if (string.IsNullOrEmpty(sanPham.AnhDaiDien))
+                {
+                    sanPham.AnhDaiDien = "default-image.jpg";
+                }
                 db.TDanhMucSps.Add(sanPham);
-                db.SaveChanges();
+                await db.SaveChangesAsync();
                 return RedirectToAction("DanhMucSanPham");
             }
             return View();
