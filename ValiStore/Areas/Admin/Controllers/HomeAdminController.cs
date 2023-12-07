@@ -75,10 +75,18 @@ namespace ValiStore.Areas.Admin.Controllers
         [Route("SuaSanPham")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult SuaSanPham(TDanhMucSp sanPham)
+        public async Task<IActionResult> SuaSanPham(TDanhMucSp sanPham, IFormFile file)
         {
             if (ModelState.IsValid)
             {
+                if (file != null)
+                {
+                    sanPham.AnhDaiDien = await UploadFile.UploadFileImage(file, @"Images", file.FileName);
+                }
+                if (string.IsNullOrEmpty(sanPham.AnhDaiDien))
+                {
+                    sanPham.AnhDaiDien = "default-image.jpg";
+                }
                 db.Entry(sanPham).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("DanhMucSanPham","HomeAdmin");

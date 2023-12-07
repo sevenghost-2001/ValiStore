@@ -60,7 +60,7 @@
 							@foreach(var item in Model){
 								<tr>
 									<td class="cart_product">
-										<a href=""><img src="@Url.Content("~/ProductsImages/Images/"+item.Product.AnhDaiDien)" alt=""></a>
+										<a href=""><img class="img_cart_product" src="@Url.Content("~/ProductsImages/Images/"+item.Product.AnhDaiDien)" alt=""></a>
 									</td>
 									<td class="cart_description">
 										<p>@item.Product.TenSp</p>
@@ -71,8 +71,8 @@
 									<td class="cart_quantity">
 										<div class="cart_quantity_button">
 											<input class="cart-item font-xl color-brand-3" type="number" data-bookid="@item.Product.MaSp" data-price="@item.Product.GiaLonNhat" value="@item.Quantity">
-											<a class="btn-delete btn btn-danger btn-sm" data-bookid="@item.Product.MaSp">Remove</a>
 										</div>
+										<a class="btn-delete btn btn-danger btn-sm" data-bookid="@item.Product.MaSp">Remove</a>
 									</td>
 									<td class="cart_total">
 										<p class="cart_total_price">@item.Total</p>

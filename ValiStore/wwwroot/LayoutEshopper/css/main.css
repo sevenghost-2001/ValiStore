@@ -1627,19 +1627,25 @@ h2.title {
 
 .cart_product {
   display: block;
+  
   margin: 15px -70px 10px 25px;
 }
-
+.img_cart_product {
+	height:50px;
+}
+.cart_quantity{
+	display:flex;
+}
 .cart_quantity_button a {
-  background:#F0F0E9;
-  color: #696763;
-  display: inline-block;
-  font-size: 16px;
-  height: 28px;
-  overflow: hidden;
-  text-align: center;
-  width: 35px;
-  float: left;
+	background: #F0F0E9;
+	color: #696763;
+	display: inline-block;
+	font-size: 16px;
+	height: 28px;
+	overflow: hidden;
+	text-align: center;
+	width: 35px;
+	float: left;
 }
 
 
