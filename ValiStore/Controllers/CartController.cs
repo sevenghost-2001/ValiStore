@@ -40,7 +40,14 @@ namespace ValiStore.Controllers
 
         public IActionResult CheckOut()
         {
-            return View();
+            List<CartItemModel> cartItems = Cart;
+            var totalPrice = 0.0m;
+            foreach (var item in Cart)
+            {
+                totalPrice += (decimal)item.Total;
+            }
+            ViewBag.GrandTotal = totalPrice;
+            return View(cartItems);
         }
         public async Task<IActionResult> Add(string maSp)
         {

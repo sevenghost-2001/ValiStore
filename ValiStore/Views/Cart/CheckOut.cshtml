@@ -1,7 +1,9 @@
-﻿
+﻿@using ValiStore.Models.ViewModels
+@model List<CartItemModel>
 @{
     ViewData["Title"] = "CheckOut";
     Layout=null;
+    var TotalPrice = ViewBag.GrandTotal;
 }
 
 <!DOCTYPE html>
@@ -64,9 +66,9 @@
         </div>
         <nav class="humberger__menu__nav mobile-menu">
             <ul>
-                <li class="active"><a href="./index.html">Home</a></li>
+                <li><a href="./index.html">Home</a></li>
                 <li><a href="./shop-grid.html">Shop</a></li>
-                <li>
+                <li class="active">
                     <a href="#">Pages</a>
                     <ul class="header__menu__dropdown">
                         <li><a href="./shop-details.html">Shop Details</a></li>
@@ -142,18 +144,18 @@
                 <div class="col-lg-6">
                     <nav class="header__menu">
                         <ul>
-                            <li><a href="./index.html">Home</a></li>
-                            <li class="active"><a href="./shop-grid.html">Shop</a></li>
-                            <li>
-                                <a href="#">Pages</a>
+                            <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+                            <li><a href="./shop-grid.html">Shop</a></li>
+                            <li class="active">
+                                <a>Pages</a>
                                 <ul class="header__menu__dropdown">
-                                    <li><a href="./shop-details.html">Shop Details</a></li>
-                                    <li><a href="./shoping-cart.html">Shoping Cart</a></li>
-                                    <li><a href="./checkout.html">Check Out</a></li>
-                                    <li><a href="./blog-details.html">Blog Details</a></li>
+                                    @*<li><a href="./shop-details.html">Shop Details</a></li>*@
+                                    <li><a asp-controller="Cart" asp-action="Index">Shoping Cart</a></li>
+                                    <li><a asp-controller="Cart" asp-action="CheckOut">Check Out</a></li>
+                                    @*<li><a href="./blog-details.html">Blog Details</a></li>*@
                                 </ul>
                             </li>
-                            <li><a href="./blog.html">Blog</a></li>
+                            @*<li><a href="./blog.html">Blog</a></li>*@
                             <li><a href="./contact.html">Contact</a></li>
                         </ul>
                     </nav>
@@ -326,11 +328,13 @@
                                 <h4>Your Order</h4>
                                 <div class="checkout__order__products">Products <span>Total</span></div>
                                 <ul>
-                                    <li>Vegetable’s Package <span>$75.99</span></li>
-                                    <li>Fresh Vegetable <span>$151.99</span></li>
-                                    <li>Organic Bananas <span>$53.99</span></li>
+                                    @foreach(var item in Model){
+                                        <li>@item.Product.TenSp <span>@item.Total</span></li>
+                                    }
+                                    @*<li>Fresh Vegetable <span>$151.99</span></li>
+                                    <li>Organic Bananas <span>$53.99</span></li>*@
                                 </ul>
-                                <div class="checkout__order__subtotal">Subtotal <span>$750.99</span></div>
+                                <div class="checkout__order__subtotal">Subtotal <span>@TotalPrice.ToString()</span></div>
                                 <div class="checkout__order__total">Total <span>$750.99</span></div>
                                 <div class="checkout__input__checkbox">
                                     <label for="acc-or">
