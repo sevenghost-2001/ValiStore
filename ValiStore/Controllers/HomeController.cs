@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using ValiStore.Models;
@@ -25,6 +26,14 @@ namespace ValiStore.Controllers
             PagedList<TDanhMucSp> lst = new PagedList<TDanhMucSp>(lstSanpham, pageNumber, pageSize);
             return View(lst);
         }
+        public IActionResult Shop(int? page)
+        {
+            int pageSize = 8;
+            int pageNumber = page == null || page < 0 ? 1 : page.Value;
+            var lstSanpham = db.TDanhMucSps.AsNoTracking().OrderBy(x => x.TenSp);
+            PagedList<TDanhMucSp> lst = new PagedList<TDanhMucSp>(lstSanpham, pageNumber, pageSize);
+            return View(lst);
+        }
         public IActionResult SanPhamTheoLoai(String maloai, int? page)
         {
             int pageSize = 8;
@@ -41,6 +50,7 @@ namespace ValiStore.Controllers
             ViewBag.anhSanPham=anhSanPham;
             return View(sanPham);
         }
+        
         //public IActionResult Privacy()
         //{
         //    return View();

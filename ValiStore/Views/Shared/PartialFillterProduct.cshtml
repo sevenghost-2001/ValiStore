@@ -1,0 +1,21 @@
+﻿@model TDanhMucSp
+<div class="col-lg-4">
+    <div class="product__discount__item">
+        <div class="featured__item__pic set-bg" data-setbg="@Url.Content("~/ProductsImages/Images/"+Model.AnhDaiDien)" style="background-image: url(&quot;img/featured/feature-1.jpg&quot;);">
+            <div class="product__discount__percent" style="color:red">-@Model.ChietKhau%</div>
+            @*<ul class="product__item__pic__hover">
+                <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+            </ul>*@
+        </div>
+        <div class="card">
+            <a asp-action="Add" asp-controller="Cart" asp-route-maSp="@Model.MaSp" class="primary-btn">ADD TO CARD</a>
+        </div>
+        <div class="product__discount__item__text">
+            <span>@Model.MaLoai</span>
+            <h5><a href="#">@Model.TenSp</a></h5>
+            <div class="product__item__price">@Model.GiaNhoNhat<span>@Model.GiaLonNhat</span></div>
+        </div>
+    </div>
+</div>
