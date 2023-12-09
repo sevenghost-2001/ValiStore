@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Packaging.Signing;
@@ -8,6 +9,7 @@ using X.PagedList;
 
 namespace ValiStore.Areas.Admin.Controllers
 {
+    [Authorize(Policy = "AdminOnly")]
     [Area("admin")]
     [Route("admin")]
     [Route("admin/homeadmin")]

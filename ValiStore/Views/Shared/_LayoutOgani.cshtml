@@ -56,7 +56,6 @@
             <div class="header__top__right__auth">
                 @*<a href="#"><i class="fa fa-user"></i> Login</a>*@
                 <a asp-controller="Access" asp-action="Logout"><i class="fa fa-user"></i> Logout</a>
-
             </div>
         </div>
         <nav class="humberger__menu__nav mobile-menu">
@@ -105,7 +104,12 @@
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6">
-                        <div class="header__top__right">
+                        <div class="header__top__right" style="display:flex; flex-direction:row-reverse">
+                            <div class="header__top__right__auth" style="display:flex; gap:5px; align-items:center">
+                                @*<a href="#"><i class="fa fa-user"></i> Login</a>*@
+                                <p style="margin:0">@ViewBag.UserName</p>
+                                <a asp-controller="Access" asp-action="Logout"><i class="fa fa-user"></i> Logout</a>
+                            </div>
                             <div class="header__top__right__social">
                                 <a href="#"><i class="fa fa-facebook"></i></a>
                                 <a href="#"><i class="fa fa-twitter"></i></a>
@@ -120,10 +124,6 @@
                                     <li><a href="#">Spanis</a></li>
                                     <li><a href="#">English</a></li>
                                 </ul>
-                            </div>
-                            <div class="header__top__right__auth">
-                                @*<a href="#"><i class="fa fa-user"></i> Login</a>*@
-                                <a asp-controller="Access" asp-action="Logout"><i class="fa fa-user"></i> Logout</a>
                             </div>
                         </div>
                     </div>
