@@ -49,6 +49,11 @@ namespace ValiStore.Controllers
             ViewBag.GrandTotal = totalPrice;
             return View(cartItems);
         }
+        /*[HttpPost]
+        public IActionResult CheckOut(CheckOutViewModel Request)
+        {
+            return View();
+        }*/
         public async Task<IActionResult> Add(string maSp)
         {
             TDanhMucSp product = db.TDanhMucSps.Find(maSp);
