@@ -1,0 +1,53 @@
+﻿@*@model IEnumerable<ValiStore.Models.TMauSac>*@
+@using X.PagedList.Mvc.Core
+@using ValiStore.Models
+@model X.PagedList.IPagedList<TMauSac>
+@{
+    ViewData["Title"] = "DanhsachMauSac";
+    Layout = "~/Areas/Admin/Views/Shared/LayoutAdmin.cshtml";
+}
+@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHelpers
+<h1>DanhsachMauSac</h1>
+
+<p>
+    <a asp-action="ThemMauSacMoi">Create New</a>
+</p>
+<p>@TempData["Message"]</p>
+<table class="table">
+    <thead>
+        <tr class="table-warning">
+            <th>
+                Tên Màu Sắc
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int i = 0;
+            String @cls = "table-success";
+        }
+@foreach (var item in Model) {
+            i = i + 1;
+            cls = "table-success";
+            if (i % 2 == 0)
+            {
+                cls = "table-primary";
+            }
+            <tr class="@cls">
+            <td>
+                @Html.DisplayFor(modelItem => item.TenMauSac)
+            </td>
+            <td>
+                <a asp-action="SuaMauSac" asp-route-maMau="@item.MaMauSac">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.MaMauSac">Details</a> |
+                <a asp-action="XoaMauSac" asp-route-maMau="@item.MaMauSac">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+@Html.PagedListPager(Model,page => Url.Action("DanhsachMauSac", new {page=page}), new X.PagedList.Web.Common.PagedListRenderOptions(){
+LiElementClasses = new List<String> {"page-item"},
+PageClasses = new List<String>{"page-link"}
+})

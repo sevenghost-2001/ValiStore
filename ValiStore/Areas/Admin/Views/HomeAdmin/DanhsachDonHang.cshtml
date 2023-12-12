@@ -1,0 +1,81 @@
+﻿@*@model IEnumerable<ValiStore.Models.THoaDonBan>*@
+@using X.PagedList.Mvc.Core
+@using ValiStore.Models
+@model X.PagedList.IPagedList<THoaDonBan>
+
+@{
+    ViewData["Title"] = "DanhsachDonHang";
+    Layout = "~/Areas/Admin/Views/Shared/LayoutAdmin.cshtml";
+}
+@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHelpers
+<h1>DanhsachDonHang</h1>
+
+<p>
+    @*<a asp-action="ThemDonHangMoi">Create New</a>*@
+</p>
+<p>@TempData["Message"]</p>
+<table class="table">
+    <thead>
+        <tr class="table-warning">
+            <th>
+                Ngày Hóa Đơn
+            </th>
+            <th>
+                Tổng Tiền Hóa Đơn
+            </th>
+            <th>
+                Giảm Giá Hóa Đơn
+            </th>
+            <th>
+                Phương Thức Thanh Toán
+            </th>
+            
+            <th>
+                Mã Khách Hàng
+            </th>
+            <th>
+                Mã Nhân Viên
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int i = 0;
+            String @cls = "table-success";
+        }
+@foreach (var item in Model) {
+            i = i + 1;
+            cls = "table-success";
+            if (i % 2 == 0)
+            {
+                cls = "table-primary";
+            }
+        <tr class="@cls">
+            <td>
+                @Html.DisplayFor(modelItem => item.NgayHoaDon)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TongTienHd)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GiamGiaHd)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PhuongThucThanhToan)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaKhachHang)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaNhanVien)
+            </td>
+            <td>
+                <a asp-action="SuaDonHang" asp-route-maHoaDon="@item.MaHoaDon">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.MaHoaDon">Details</a> |
+                <a asp-action="XoaDonHang" asp-route-maHoaDon="@item.MaHoaDon">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Packaging.Signing;
@@ -20,6 +21,7 @@ namespace ValiStore.Areas.Admin.Controllers
         {
             return View();
         }
+
         [Route("danhmucsanpham")]
         public IActionResult DanhMucSanPham(int? page)
         {
@@ -27,6 +29,33 @@ namespace ValiStore.Areas.Admin.Controllers
             int pageNumber = page == null || page < 0 ? 1 : page.Value;
             var lstSanpham = db.TDanhMucSps.AsNoTracking().OrderBy(x => x.TenSp);
             PagedList<TDanhMucSp> lst = new PagedList<TDanhMucSp>(lstSanpham, pageNumber, pageSize);
+            return View(lst);
+        }
+        [Route("DanhsachDonHang")]
+        public IActionResult DanhsachDonHang(int? page)
+        {
+            int pageSize = 12;
+            int pageNumber = page == null || page < 0 ? 1 : page.Value;
+            var lstDonHang = db.THoaDonBans.AsNoTracking().OrderBy(x => x.MaHoaDon);
+            PagedList<THoaDonBan> lst = new PagedList<THoaDonBan>(lstDonHang, pageNumber, pageSize);
+            return View(lst);
+        }
+        [Route("DanhsachMauSac")]
+        public IActionResult DanhsachMauSac(int? page)
+        {
+            int pageSize = 12;
+            int pageNumber = page == null || page < 0 ? 1 : page.Value;
+            var lstMau = db.TMauSacs.AsNoTracking().OrderBy(x => x.TenMauSac);
+            PagedList<TMauSac> lst = new PagedList<TMauSac>(lstMau, pageNumber, pageSize);
+            return View(lst);
+        }
+        [Route("DanhsachDoiTuong")]
+        public IActionResult DanhsachDoiTuong(int? page)
+        {
+            int pageSize = 12;
+            int pageNumber = page == null || page < 0 ? 1 : page.Value;
+            var lstDoiTuong = db.TLoaiDts.AsNoTracking().OrderBy(x => x.TenLoai);
+            PagedList<TLoaiDt> lst = new PagedList<TLoaiDt>(lstDoiTuong, pageNumber, pageSize);
             return View(lst);
         }
         [Route("ThemSanPhamMoi")]
@@ -57,6 +86,43 @@ namespace ValiStore.Areas.Admin.Controllers
                 db.TDanhMucSps.Add(sanPham);
                 await db.SaveChangesAsync();
                 return RedirectToAction("DanhMucSanPham");
+            }
+            return View();
+        }
+        [Route("ThemDoiTuongMoi")]
+        [HttpGet]
+        public IActionResult ThemDoiTuongMoi()
+        {
+            return View();
+        }
+        [Route("ThemDoiTuongMoi")]
+        [HttpPost]
+        public async Task<IActionResult> ThemDoiTuongMoi(TLoaiDt sanPham)
+        {
+            if (ModelState.IsValid)
+            {
+               
+                db.TLoaiDts.Add(sanPham);
+                await db.SaveChangesAsync();
+                return RedirectToAction("DanhsachDoiTuong");
+            }
+            return View();
+        }
+        [Route("ThemMauSacMoi")]
+        [HttpGet]
+        public IActionResult ThemMauSacMoi()
+        {
+            return View();
+        }
+        [Route("ThemMauSacMoi")]
+        [HttpPost]
+        public async Task<IActionResult> ThemMauSacMoi(TMauSac sanPham)
+        {
+            if (ModelState.IsValid)
+            {
+                db.TMauSacs.Add(sanPham);
+                await db.SaveChangesAsync();
+                return RedirectToAction("DanhsachMauSac");
             }
             return View();
         }
@@ -93,6 +159,68 @@ namespace ValiStore.Areas.Admin.Controllers
             }
             return View();
         }
+        [Route("SuaDonHang")]
+        [HttpGet]
+        public IActionResult SuaDonHang(string maHoaDon)
+        {
+            ViewBag.MaKhachHang = new SelectList(db.TKhachHangs.ToList(), "MaKhanhHang", "TenKhachHang");
+            ViewBag.MaNhanVien = new SelectList(db.TNhanViens.ToList(), "MaNhanVien", "TenNhanVien");
+            var sanPham = db.THoaDonBans.Find(maHoaDon);
+            return View(sanPham);
+        }
+        [Route("SuaDonHang")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SuaDonHang(THoaDonBan sanPham)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(sanPham).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("DanhsachDonHang", "HomeAdmin");
+            }
+            return View();
+        }
+        [Route("SuaMauSac")]
+        [HttpGet]
+        public IActionResult SuaMauSac(string maMau)
+        {
+            var sanPham = db.TMauSacs.Find(maMau);
+            return View(sanPham);
+        }
+        [Route("SuaMauSac")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SuaMauSac(TMauSac sanPham)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(sanPham).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("DanhsachMauSac", "HomeAdmin");
+            }
+            return View();
+        }
+        [Route("SuaDoiTuong")]
+        [HttpGet]
+        public IActionResult SuaDoiTuong(string maDT)
+        {
+            var sanPham = db.TLoaiDts.Find(maDT);
+            return View(sanPham);
+        }
+        [Route("SuaDoiTuong")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SuaDoiTuong(TLoaiDt sanPham)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(sanPham).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("DanhsachDoiTuong", "HomeAdmin");
+            }
+            return View();
+        }
         [Route("XoaSanPham")]
         [HttpGet]
         public IActionResult XoaSanPham(string maSanPham)
@@ -110,6 +238,36 @@ namespace ValiStore.Areas.Admin.Controllers
             db.SaveChanges();
             TempData["Message"] = "Sản phẩm đã được xóa";
             return RedirectToAction("DanhMucSanPham", "HomeAdmin");
+        }
+        [Route("XoaDonHang")]
+        [HttpGet]
+        public IActionResult XoaDonHang(string maHoaDon)
+        {
+            TempData["Message"] = "";
+            db.Remove(db.THoaDonBans.Find(maHoaDon));
+            db.SaveChanges();
+            TempData["Message"] = "Hóa đơn đã được xóa";
+            return RedirectToAction("DanhsachDonHang", "HomeAdmin");
+        }
+        [Route("XoaMauSac")]
+        [HttpGet]
+        public IActionResult XoaMauSac(string maMau)
+        {
+            TempData["Message"] = "";
+            db.Remove(db.TMauSacs.Find(maMau));
+            db.SaveChanges();
+            TempData["Message"] = "Màu sắc đã được xóa";
+            return RedirectToAction("DanhsachMauSac", "HomeAdmin");
+        }
+        [Route("XoaDoiTuong")]
+        [HttpGet]
+        public IActionResult XoaDoiTuong(string maDT)
+        {
+            TempData["Message"] = "";
+            db.Remove(db.TLoaiDts.Find(maDT));  
+            db.SaveChanges();
+            TempData["Message"] = "Màu sắc đã được xóa";
+            return RedirectToAction("DanhsachDoiTuong", "HomeAdmin");
         }
         [Route("DanhSachLoaiSanPham")]
         public IActionResult DanhSachLoaiSanPham(int? page)
