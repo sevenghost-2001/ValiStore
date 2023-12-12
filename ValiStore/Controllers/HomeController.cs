@@ -23,8 +23,6 @@ namespace ValiStore.Controllers
 
         [Authorize]
 
-        /*[Authentication]*/
-
         public IActionResult Index(int? page)
         {
             int pageSize = 8;
@@ -33,12 +31,17 @@ namespace ValiStore.Controllers
             PagedList<TDanhMucSp> lst = new PagedList<TDanhMucSp>(lstSanpham, pageNumber, pageSize);
             return View(lst);
         }
-        public IActionResult Shop(string sortOrder, int? page)
+        public IActionResult Shop(string? search,string sortOrder, int? page)
         {
             ViewData["sortValue"] = string.IsNullOrEmpty(sortOrder) ? "price_desc" : sortOrder;
+            ViewData["currentFilter"] = search;
             int pageSize = 8;
             int pageNumber = page == null || page < 0 ? 1 : page.Value;
             var lstSanpham = db.TDanhMucSps.AsNoTracking();
+            if (!String.IsNullOrEmpty(search))
+            {
+                lstSanpham = lstSanpham.Where(sp => sp.TenSp.Contains(search));
+            }
             switch (sortOrder)
             {
                 case "name_desc":
