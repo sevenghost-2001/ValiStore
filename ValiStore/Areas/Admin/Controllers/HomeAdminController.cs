@@ -9,7 +9,7 @@ using X.PagedList;
 
 namespace ValiStore.Areas.Admin.Controllers
 {
-    [Authorize(Policy = "AdminOnly")]
+/*    [Authorize(Policy = "AdminOnly")]*/
     [Area("admin")]
     [Route("admin")]
     [Route("admin/homeadmin")]
@@ -175,8 +175,8 @@ namespace ValiStore.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(sanPham).State = EntityState.Modified;
-                db.SaveChanges();
+                db.Entry(sanPham).State =  EntityState.Modified;
+                await db.SaveChangesAsync();
                 return RedirectToAction("DanhsachDonHang", "HomeAdmin");
             }
             return View();
@@ -195,8 +195,8 @@ namespace ValiStore.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(sanPham).State = EntityState.Modified;
-                db.SaveChanges();
+                db.Entry(sanPham).State =  EntityState.Modified;
+                await db.SaveChangesAsync();
                 return RedirectToAction("DanhsachMauSac", "HomeAdmin");
             }
             return View();
@@ -216,7 +216,7 @@ namespace ValiStore.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(sanPham).State = EntityState.Modified;
-                db.SaveChanges();
+                await db.SaveChangesAsync();
                 return RedirectToAction("DanhsachDoiTuong", "HomeAdmin");
             }
             return View();

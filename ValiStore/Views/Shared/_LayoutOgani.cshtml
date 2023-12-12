@@ -39,7 +39,7 @@
         <div class="humberger__menu__cart">
             <ul>
                 <li><a href="#"><i class="fa fa-heart"></i> <span></span></a></li>
-                <li><a href="#"><i class="fa fa-shopping-bag"></i> <span></span></a></li>
+                <li><a asp-controller="Cart" asp-action="index"><i class="fa fa-shopping-bag"></i> <span></span></a></li>
             </ul>
             <div class="header__cart__price">item: <span>$150.00</span></div>
         </div>
@@ -146,8 +146,8 @@
                                 <a href="#">Pages</a>
                                 <ul class="header__menu__dropdown">
                                     <li><a href="./shop-details.html">Shop Details</a></li>
-                                    <li><a href="./shoping-cart.html">Shoping Cart</a></li>
-                                    <li><a href="./checkout.html">Check Out</a></li>
+                                    <li><a asp-controller="Cart" asp-action="Index">Shoping Cart</a></li>
+                                    <li><a asp-controller="Cart" asp-action="CheckOut">Check Out</a></li>
                                     <li><a href="./blog-details.html">Blog Details</a></li>
                                 </ul>
                             </li>
@@ -160,7 +160,7 @@
                     <div class="header__cart">
                         <ul>
                             <li><a href="#"><i class="fa fa-heart"></i> <span></span></a></li>
-                            <li><a href="#"><i class="fa fa-shopping-bag"></i> <span></span></a></li>
+                            <li><a asp-action="Index" asp-controller="Cart"><i class="fa fa-shopping-bag"></i> <span></span></a></li>
                         </ul>
                         <div class="header__cart__price">item: <span></span></div>
                     </div>

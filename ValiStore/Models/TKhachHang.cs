@@ -22,6 +22,5 @@ namespace ValiStore.Models
 
         public virtual TUser? UsernameNavigation { get; set; }
         public virtual ICollection<THoaDonBan> THoaDonBans { get; set; }
-
     }
 }
