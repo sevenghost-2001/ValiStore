@@ -9,6 +9,7 @@ using X.PagedList;
 
 namespace ValiStore.Areas.Admin.Controllers
 {
+    [Authorize(Policy = "AdminOnly")]
     [Area("admin")]
     [Route("admin")]
     [Route("admin/homeadmin")]
@@ -21,7 +22,6 @@ namespace ValiStore.Areas.Admin.Controllers
         {
             return View();
         }
-
         [Route("danhmucsanpham")]
         public IActionResult DanhMucSanPham(int? page)
         {
