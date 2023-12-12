@@ -33,14 +33,36 @@ namespace ValiStore.Controllers
             PagedList<TDanhMucSp> lst = new PagedList<TDanhMucSp>(lstSanpham, pageNumber, pageSize);
             return View(lst);
         }
-        public IActionResult Shop(int? page)
+        public IActionResult Shop(string sortOrder, int? page)
         {
+            ViewData["sortValue"] = string.IsNullOrEmpty(sortOrder) ? "price_desc" : sortOrder;
             int pageSize = 8;
             int pageNumber = page == null || page < 0 ? 1 : page.Value;
-            var lstSanpham = db.TDanhMucSps.AsNoTracking().OrderBy(x => x.TenSp);
-            PagedList<TDanhMucSp> lst = new PagedList<TDanhMucSp>(lstSanpham, pageNumber, pageSize);
+            var lstSanpham = db.TDanhMucSps.AsNoTracking();
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    lstSanpham = lstSanpham.OrderByDescending(x => x.TenSp);
+                    break;
+                case "name_asc":
+                    lstSanpham = lstSanpham.OrderBy(x => x.TenSp);
+                    break;
+                case "price_desc":
+                    lstSanpham = lstSanpham.OrderByDescending(x => x.GiaLonNhat);
+                    break;
+                case "price_asc":
+                    lstSanpham = lstSanpham.OrderBy(x => x.GiaLonNhat);
+                    break;
+                default:
+                    lstSanpham = lstSanpham.OrderBy(x => x.GiaLonNhat);
+                    break;
+            }
+            //var lstSanpham = db.TDanhMucSps.AsNoTracking().OrderBy(x => x.TenSp);
+            PagedList<TDanhMucSp> lst = new(lstSanpham, pageNumber, pageSize);
             return View(lst);
         }
+
+
         public IActionResult SanPhamTheoLoai(String maloai, int? page)
         {
             int pageSize = 8;
