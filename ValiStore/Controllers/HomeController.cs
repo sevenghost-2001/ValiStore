@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using ValiStore.Models;
@@ -17,7 +20,11 @@ namespace ValiStore.Controllers
         {
             _logger = logger;
         }
+
+        [Authorize]
+
         /*[Authentication]*/
+
         public IActionResult Index(int? page)
         {
             int pageSize = 8;

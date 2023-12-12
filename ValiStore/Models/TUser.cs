@@ -9,6 +9,7 @@ namespace ValiStore.Models
         {
             TKhachHangs = new HashSet<TKhachHang>();
             TNhanViens = new HashSet<TNhanVien>();
+            LoaiUser = 1;
         }
 
         public string Username { get; set; } = null!;
@@ -17,5 +18,6 @@ namespace ValiStore.Models
 
         public virtual ICollection<TKhachHang> TKhachHangs { get; set; }
         public virtual ICollection<TNhanVien> TNhanViens { get; set; }
+
     }
 }
