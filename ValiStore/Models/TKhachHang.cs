@@ -10,7 +10,7 @@ namespace ValiStore.Models
             THoaDonBans = new HashSet<THoaDonBan>();
         }
 
-        public string MaKhachHang { get; set; } = null!;
+        public string MaKhanhHang { get; set; } = null!;
         public string? Username { get; set; }
         public string? TenKhachHang { get; set; }
         public DateTime? NgaySinh { get; set; }

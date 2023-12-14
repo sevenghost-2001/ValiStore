@@ -9,9 +9,10 @@
 @addTagHelper *,Microsoft.AspNetCore.Mvc.TagHelpers
 <h1>DanhsachNhanVien</h1>
 
-<p>
+@*<button class="btn_create"> 
     <a asp-action="ThemNhanVienMoi">Create New</a>
-</p>
+</button>*@
+<input style="width: 128px;" class="btn btn-primary btn-sm" asp-action="ThemNhanVienMoi" value="Create New" />
 
 <p>@TempData["Message"]</p>
 <table class="table">

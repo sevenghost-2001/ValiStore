@@ -30,7 +30,7 @@ namespace ValiStore.Controllers
                 _context.TUsers.Add(user);
                 Guid guid = Guid.NewGuid();
                 var khachhang = new TKhachHang();
-                khachhang.MaKhachHang = guid.ToString("N").Substring(0,25);
+                khachhang.MaKhanhHang = guid.ToString("N").Substring(0,25);
                 khachhang.Username = user.Username;
                 _context.TKhachHangs.Add(khachhang);
                 _context.SaveChanges();

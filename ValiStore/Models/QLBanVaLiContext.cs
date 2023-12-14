@@ -366,11 +366,11 @@ namespace ValiStore.Models
 
             modelBuilder.Entity<TKhachHang>(entity =>
             {
-                entity.HasKey(e => e.MaKhachHang);
+                entity.HasKey(e => e.MaKhanhHang);
 
                 entity.ToTable("tKhachHang");
 
-                entity.Property(e => e.MaKhachHang)
+                entity.Property(e => e.MaKhanhHang)
                     .HasMaxLength(25)
                     .IsUnicode(false)
                     .IsFixedLength();
