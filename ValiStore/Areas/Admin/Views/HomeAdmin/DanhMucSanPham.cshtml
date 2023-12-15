@@ -8,9 +8,8 @@
 @addTagHelper *,Microsoft.AspNetCore.Mvc.TagHelpers
 <h2>Danh mục các sản phẩm</h2>
 
-<p>
-    <a asp-action="ThemSanPhamMoi">Create New</a>
-</p>
+
+<a class="btn btn-primary btn-lg active btn_create" role="button" aria-pressed="true" asp-action="ThemSanPhamMoi">Create New</a>
 <p>@TempData["Message"]</p>
 <table class="table">
     <thead>

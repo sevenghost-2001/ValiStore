@@ -1,16 +1,13 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using NuGet.Packaging.Signing;
 using ValiStore.Extention;
 using ValiStore.Models;
 using X.PagedList;
 
 namespace ValiStore.Areas.Admin.Controllers
 {
-    [Authorize(Policy = "AdminOnly")]
+   /* [Authorize(Policy = "AdminOnly")]*/
     [Area("admin")]
     [Route("admin")]
     [Route("admin/homeadmin")]
@@ -19,8 +16,10 @@ namespace ValiStore.Areas.Admin.Controllers
         QLBanVaLiContext db = new QLBanVaLiContext();
         [Route("")]
         [Route("index")]
-        public IActionResult Index()
+        public IActionResult Index(THoaDonBan hoaDonBan)
         {
+            ViewBag.CountDH = new SelectList(db.THoaDonBans.ToList(), "MaHoaDon", "NgayHoaDon").Count();
+            ViewBag.DT = db.THoaDonBans.Sum(x => x.TongTienHd);
             return View();
         }
         [Route("danhmucsanpham")]
@@ -102,7 +101,7 @@ namespace ValiStore.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-               
+
                 db.TLoaiDts.Add(sanPham);
                 await db.SaveChangesAsync();
                 return RedirectToAction("DanhsachDoiTuong");
@@ -156,7 +155,7 @@ namespace ValiStore.Areas.Admin.Controllers
                 }
                 db.Entry(sanPham).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("DanhMucSanPham","HomeAdmin");
+                return RedirectToAction("DanhMucSanPham", "HomeAdmin");
             }
             return View();
         }
@@ -187,7 +186,7 @@ namespace ValiStore.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(sanPham).State = EntityState.Modified;
-                db.SaveChanges();
+                await db.SaveChangesAsync();
                 return RedirectToAction("DanhsachDonHang", "HomeAdmin");
             }
             return View();
@@ -207,7 +206,7 @@ namespace ValiStore.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(sanPham).State = EntityState.Modified;
-                db.SaveChanges();
+                await db.SaveChangesAsync();
                 return RedirectToAction("DanhsachMauSac", "HomeAdmin");
             }
             return View();
@@ -227,7 +226,7 @@ namespace ValiStore.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(sanPham).State = EntityState.Modified;
-                db.SaveChanges();
+                await db.SaveChangesAsync();
                 return RedirectToAction("DanhsachDoiTuong", "HomeAdmin");
             }
             return View();
@@ -275,7 +274,7 @@ namespace ValiStore.Areas.Admin.Controllers
         public IActionResult XoaDoiTuong(string maDT)
         {
             TempData["Message"] = "";
-            db.Remove(db.TLoaiDts.Find(maDT));  
+            db.Remove(db.TLoaiDts.Find(maDT));
             db.SaveChanges();
             TempData["Message"] = "Màu sắc đã được xóa";
             return RedirectToAction("DanhsachDoiTuong", "HomeAdmin");
@@ -285,7 +284,7 @@ namespace ValiStore.Areas.Admin.Controllers
         {
             int pageSize = 12;
             int pageNumber = page == null || page < 0 ? 1 : page.Value;
-            var lstSanpham = db.TLoaiSps.AsNoTracking().OrderBy(x=>x.Loai);
+            var lstSanpham = db.TLoaiSps.AsNoTracking().OrderBy(x => x.Loai);
             PagedList<TLoaiSp> lst = new PagedList<TLoaiSp>(lstSanpham, pageNumber, pageSize);
             return View(lst);
         }
@@ -351,8 +350,8 @@ namespace ValiStore.Areas.Admin.Controllers
         {
             int pageSize = 12;
             int pageNumber = page == null || page < 0 ? 1 : page.Value;
-            var lstKhachHang = db.TKhachHangs.AsNoTracking().OrderBy(x => x.TenKhachHang);
-            PagedList<TKhachHang> lst = new PagedList<TKhachHang>(lstKhachHang, pageNumber, pageSize);
+            var lsTKhachHang = db.TKhachHangs.AsNoTracking().OrderBy(x => x.TenKhachHang);
+            PagedList<TKhachHang> lst = new PagedList<TKhachHang>(lsTKhachHang, pageNumber, pageSize);
             return View(lst);
         }
         [Route("ThemKhachHangMoi")]
@@ -377,11 +376,11 @@ namespace ValiStore.Areas.Admin.Controllers
         }
         [Route("SuaKhachHang")]
         [HttpGet]
-        public IActionResult SuaKhachHang(string maKhachHang)
+        public IActionResult SuaKhachHang(string maKhanhHang)
         {
             ViewBag.Username = new SelectList(db.TUsers.ToList(), "Username", "Username");
             //ViewBag.LoaiUser = new SelectList(db.TUsers.ToList(), "Username", "LoaiUser");
-            var KhachHang = db.TKhachHangs.Find(maKhachHang);
+            var KhachHang = db.TKhachHangs.Find(maKhanhHang);
             return View(KhachHang);
         }
         [Route("SuaKhachHang")]
@@ -399,7 +398,7 @@ namespace ValiStore.Areas.Admin.Controllers
         }
         [Route("XoaKhachHang")]
         [HttpGet]
-        public IActionResult XoaKhachHang(string maKhachHang)
+        public IActionResult XoaKhachHang(string maKhanhHang)
         {
             TempData["Message"] = "";
             //var chiTietSanPham = db.TChiTietSanPhams.Where(x => x.MaSp == maKhachHang).ToList();
@@ -408,9 +407,9 @@ namespace ValiStore.Areas.Admin.Controllers
             //    TempData["Message"] = "Không xóa được sản phẩm này";
             //    return RedirectToAction("DanhsachKhachHang", "HomeAdmin");
             //}
-            var anhDaiDien = db.TAnhSps.Where(x => x.MaSp == maKhachHang);
+            var anhDaiDien = db.TAnhSps.Where(x => x.MaSp == maKhanhHang);
             if (anhDaiDien.Any()) db.RemoveRange(anhDaiDien);
-            db.Remove(db.TKhachHangs.Find(maKhachHang));
+            db.Remove(db.TKhachHangs.Find(maKhanhHang));
             db.SaveChanges();
             TempData["Message"] = "Khách hàng đã được xóa";
             return RedirectToAction("DanhsachKhachHang", "HomeAdmin");

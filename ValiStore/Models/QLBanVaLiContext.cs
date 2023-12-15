@@ -38,7 +38,7 @@ namespace ValiStore.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=QLBanVaLi;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+                optionsBuilder.UseSqlServer("Data Source=DESKTOP-3U33KT3\\MSSQLSERVER01;Initial Catalog=QLBanVaLi;Integrated Security=True");
             }
         }
 
@@ -366,11 +366,11 @@ namespace ValiStore.Models
 
             modelBuilder.Entity<TKhachHang>(entity =>
             {
-                entity.HasKey(e => e.MaKhachHang);
+                entity.HasKey(e => e.MaKhanhHang);
 
                 entity.ToTable("tKhachHang");
 
-                entity.Property(e => e.MaKhachHang)
+                entity.Property(e => e.MaKhanhHang)
                     .HasMaxLength(25)
                     .IsUnicode(false)
                     .IsFixedLength();
