@@ -30,7 +30,7 @@ namespace ValiStore.Controllers
             var usernameClaim = User.FindFirst(ClaimTypes.Name);
             var username = usernameClaim != null ? usernameClaim.Value : "Guest";
             var khachhang = _context.TKhachHangs.Where(kh => kh.Username == username).ToList().FirstOrDefault();
-            var hoadon = _context.THoaDonBans.Where(hd => hd.MaKhachHang == khachhang.MaKhachHang).ToList();
+            var hoadon = _context.THoaDonBans.Where(hd => hd.MaKhachHang == khachhang.MaKhanhHang).ToList();
             List<KhachHang_ChiTietHDB> viewModels = new List<KhachHang_ChiTietHDB>();
             if (hoadon.Count() >= 1)
             {
@@ -67,7 +67,7 @@ namespace ValiStore.Controllers
 
             var tKhachHang = await _context.TKhachHangs
                 .Include(t => t.UsernameNavigation)
-                .FirstOrDefaultAsync(m => m.MaKhachHang == id);
+                .FirstOrDefaultAsync(m => m.MaKhanhHang == id);
             if (tKhachHang == null)
             {
                 return NotFound();
@@ -122,9 +122,9 @@ namespace ValiStore.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("MaKhachHang,Username,TenKhachHang,NgaySinh,SoDienThoai,DiaChi,LoaiKhachHang,AnhDaiDien,GhiChu")] TKhachHang tKhachHang)
+        public async Task<IActionResult> Edit(string id, [Bind("MaKhanhHang,Username,TenKhachHang,NgaySinh,SoDienThoai,DiaChi,LoaiKhachHang,AnhDaiDien,GhiChu")] TKhachHang tKhachHang)
         {
-            if (id != tKhachHang.MaKhachHang)
+            if (id != tKhachHang.MaKhanhHang)
             {
                 return NotFound();
             }
@@ -138,7 +138,7 @@ namespace ValiStore.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TKhachHangExists(tKhachHang.MaKhachHang))
+                    if (!TKhachHangExists(tKhachHang.MaKhanhHang))
                     {
                         return NotFound();
                     }
@@ -163,7 +163,7 @@ namespace ValiStore.Controllers
 
             var tKhachHang = await _context.TKhachHangs
                 .Include(t => t.UsernameNavigation)
-                .FirstOrDefaultAsync(m => m.MaKhachHang == id);
+                .FirstOrDefaultAsync(m => m.MaKhanhHang == id);
             if (tKhachHang == null)
             {
                 return NotFound();
@@ -193,7 +193,7 @@ namespace ValiStore.Controllers
 
         private bool TKhachHangExists(string id)
         {
-          return (_context.TKhachHangs?.Any(e => e.MaKhachHang == id)).GetValueOrDefault();
+          return (_context.TKhachHangs?.Any(e => e.MaKhanhHang == id)).GetValueOrDefault();
         }
     }
 }

@@ -66,7 +66,7 @@ namespace ValiStore.Controllers
                 Guid guid = Guid.NewGuid();
                 DateTime currentTime = DateTime.Now;
                 var username = User.FindFirst(ClaimTypes.Name).Value.ToString();
-                var mkh = db.TKhachHangs.Where(u => u.Username.Equals(username)).ToList().FirstOrDefault().MaKhachHang;
+                var mkh = db.TKhachHangs.Where(u => u.Username.Equals(username)).ToList().FirstOrDefault().MaKhanhHang;
                 var mhd = guid.ToString("N").Substring(0, 25);
                 // add hoa don
                 var order = new THoaDonBan
