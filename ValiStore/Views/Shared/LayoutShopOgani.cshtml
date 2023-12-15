@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@using System.Security.Claims
+@{
+    var usernameClaim = User.FindFirst(ClaimTypes.Name);
+    var username = usernameClaim != null ? usernameClaim.Value : "Guest";
+}
+<!DOCTYPE html>
 <html lang="zxx">
 
 <head>
@@ -53,7 +58,8 @@
                 </ul>
             </div>
             <div class="header__top__right__auth">
-                <a href="#"><i class="fa fa-user"></i> Login</a>
+                @* <a href="#"><i class="fa fa-user"></i> Login</a> *@
+                <a asp-controller="Access" asp-action="Logout"><i class="fa fa-user"></i> Logout</a>
             </div>
         </div>
         <nav class="humberger__menu__nav mobile-menu">
@@ -102,7 +108,15 @@
                         </div>
                     </div>
                     <div class="col-lg-6">
-                        <div class="header__top__right">
+                        <div class="header__top__right" style="display:flex; flex-direction:row-reverse">
+                            <div class="header__top__right__auth" style="display:flex; gap:5px; align-items:center">
+                                @*<a href="#"><i class="fa fa-user"></i> Login</a>*@
+                                <p style="margin:0px 10px; font-size:18px">@username</p>
+                                <a asp-action="Index" asp-controller="User">
+                                    <i class="fa fa-user"></i>
+                                </a>
+                                <a asp-controller="Access" asp-action="Logout"> Logout</a>
+                            </div>
                             <div class="header__top__right__social">
                                 <a href="#"><i class="fa fa-facebook"></i></a>
                                 <a href="#"><i class="fa fa-twitter"></i></a>
@@ -117,9 +131,6 @@
                                     <li><a href="#">Spanis</a></li>
                                     <li><a href="#">English</a></li>
                                 </ul>
-                            </div>
-                            <div class="header__top__right__auth">
-                                <a href="#"><i class="fa fa-user"></i> Login</a>
                             </div>
                         </div>
                     </div>

@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Net.NetworkInformation;
 using ValiStore.Extention;
 using ValiStore.Models;
 using ValiStore.Models.ViewModels;
 using ValiStore.Repository;
+using System.Security.Claims;
 
 namespace ValiStore.Controllers
 {
@@ -49,11 +52,58 @@ namespace ValiStore.Controllers
             ViewBag.GrandTotal = totalPrice;
             return View(cartItems);
         }
-        /*[HttpPost]
-        public IActionResult CheckOut(CheckOutViewModel Request)
+        [HttpPost]
+        public IActionResult PlaceOrder()
+        {
+            if (ModelState.IsValid)
+            {
+                List<CartItemModel> cartItems = Cart;
+                var totalPrice = 0.0m;
+                foreach (var item in Cart)
+                {
+                    totalPrice += (decimal)item.Total;
+                }
+                Guid guid = Guid.NewGuid();
+                DateTime currentTime = DateTime.Now;
+                var username = User.FindFirst(ClaimTypes.Name).Value.ToString();
+                var mkh = db.TKhachHangs.Where(u => u.Username.Equals(username)).ToList().FirstOrDefault().MaKhachHang;
+                var mhd = guid.ToString("N").Substring(0, 25);
+                // add hoa don
+                var order = new THoaDonBan
+                {
+                    MaHoaDon = mhd,
+                    NgayHoaDon = currentTime,
+                    MaKhachHang = mkh.ToString(),
+                    TongTienHd = totalPrice,
+                };
+                db.THoaDonBans.Add(order);
+                db.SaveChanges();
+                // add chi tiet hoa don
+                foreach( var item in  Cart )
+                {
+                    THoaDonBan hoadon = db.THoaDonBans.Find(mhd);
+                    TChiTietSanPham sanpham = db.TChiTietSanPhams.FirstOrDefault(sp => sp.MaSp == item.Product.MaSp);
+                    if( hoadon != null && sanpham != null )
+                    {
+                        var orderDetail = new TChiTietHdb
+                        {
+                            MaHoaDon = hoadon.MaHoaDon,
+                            MaChiTietSp = sanpham.MaChiTietSp,
+                            SoLuongBan = item.Quantity,
+                            DonGiaBan = item.Total
+                        };
+                        db.TChiTietHdbs.Add(orderDetail);
+                        db.SaveChanges();
+                    }
+                };
+            return RedirectToAction("thanksPage");
+            }
+            return RedirectToAction("CheckOut");
+        }
+        public IActionResult thanksPage()
         {
             return View();
-        }*/
+        }
         public async Task<IActionResult> Add(string maSp)
         {
             TDanhMucSp product = db.TDanhMucSps.Find(maSp);

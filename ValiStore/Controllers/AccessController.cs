@@ -41,7 +41,6 @@ namespace ValiStore.Controllers
                 identity.AddClaim(new Claim(ClaimTypes.Role, user1.LoaiUser.ToString())); // Chuyển đổi kiểu tinyint sang chuỗi
 
                 var principal = new ClaimsPrincipal(identity);
-                ViewBag.UserName = user.Username;
                 // Đăng nhập (sign in) người dùng
                 HttpContext.SignInAsync(principal);
 

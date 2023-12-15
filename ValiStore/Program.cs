@@ -32,11 +32,11 @@ builder.Services.AddAuthentication(options =>
 {
     options.LoginPath = "/Access/Login";
 });
-/*builder.Services.AddAuthorization(options =>
+builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("AdminOnly", policy => policy.RequireRole("0"));
 });
-*/
+
 builder.Services.AddScoped<ILoaiSpRepository, LoaiSpRepository>();
 builder.Services.AddSession();
 builder.Services.AddDistributedMemoryCache();

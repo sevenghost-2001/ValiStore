@@ -1,9 +1,12 @@
 ﻿@using ValiStore.Models.ViewModels
+@using System.Security.Claims
 @model List<CartItemModel>
 @{
     ViewData["Title"] = "CheckOut";
     Layout=null;
     var TotalPrice = ViewBag.GrandTotal;
+    var usernameClaim = User.FindFirst(ClaimTypes.Name);
+    var username = usernameClaim != null ? usernameClaim.Value : "Guest";
 }
 
 <!DOCTYPE html>
@@ -61,23 +64,23 @@
                 </ul>
             </div>
             <div class="header__top__right__auth">
-                <a href="#"><i class="fa fa-user"></i> Login</a>
+                <a asp-controller="Access" asp-action="Logout"><i class="fa fa-user"></i> Logout</a>
             </div>
         </div>
         <nav class="humberger__menu__nav mobile-menu">
             <ul>
-                <li><a href="./index.html">Home</a></li>
-                <li><a href="./shop-grid.html">Shop</a></li>
+                <li class="active"><a asp-controller="Home" asp-action="Index">Home</a></li>
+                <li><a asp-controller="Home" asp-action="Shop">Shop</a></li>
                 <li class="active">
                     <a href="#">Pages</a>
                     <ul class="header__menu__dropdown">
-                        <li><a href="./shop-details.html">Shop Details</a></li>
-                        <li><a href="./shoping-cart.html">Shoping Cart</a></li>
-                        <li><a href="./checkout.html">Check Out</a></li>
-                        <li><a href="./blog-details.html">Blog Details</a></li>
+                        @* <li><a href="./shop-details.html">Shop Details</a></li> *@
+                        <li><a asp-controller="Cart" asp-action="Index">Shoping Cart</a></li>
+                        <li><a asp-controller="Cart" asp-action="CheckOut">Check Out</a></li>
+                        @* <li><a href="./blog-details.html">Blog Details</a></li> *@
                     </ul>
                 </li>
-                <li><a href="./blog.html">Blog</a></li>
+                @* <li><a href="./blog.html">Blog</a></li> *@
                 <li><a href="./contact.html">Contact</a></li>
             </ul>
         </nav>
@@ -110,7 +113,15 @@
                         </div>
                     </div>
                     <div class="col-lg-6">
-                        <div class="header__top__right">
+                        <div class="header__top__right" style="display:flex; flex-direction:row-reverse">
+                            <div class="header__top__right__auth" style="display:flex; gap:5px; align-items:center">
+                                @*<a href="#"><i class="fa fa-user"></i> Login</a>*@
+                                <p style="margin:0px 10px; font-size:18px">@username</p>
+                                <a asp-action="Index" asp-controller="User">
+                                    <i class="fa fa-user"></i>
+                                </a>
+                                <a asp-controller="Access" asp-action="Logout"> Logout</a>
+                            </div>
                             <div class="header__top__right__social">
                                 <a href="#"><i class="fa fa-facebook"></i></a>
                                 <a href="#"><i class="fa fa-twitter"></i></a>
@@ -118,16 +129,13 @@
                                 <a href="#"><i class="fa fa-pinterest-p"></i></a>
                             </div>
                             <div class="header__top__right__language">
-                                <img src="~/LayoutOgani/img/language.png" alt="">
+                                <img src="../LayoutOgani/img/language.png" alt="">
                                 <div>English</div>
                                 <span class="arrow_carrot-down"></span>
                                 <ul>
                                     <li><a href="#">Spanis</a></li>
                                     <li><a href="#">English</a></li>
                                 </ul>
-                            </div>
-                            <div class="header__top__right__auth">
-                                <a href="#"><i class="fa fa-user"></i> Login</a>
                             </div>
                         </div>
                     </div>
@@ -243,7 +251,7 @@
             </div>
             <div class="checkout__form">
                 <h4>Billing Details</h4>
-                <form action="#">
+                <form asp-controller="Cart" asp-action="PlaceOrder" method="post">
                     <div class="row">
                         <div class="col-lg-8 col-md-6">
                             <div class="row">
@@ -293,43 +301,44 @@
                         </div>
                         <div class="col-lg-4 col-md-6">
                             <div class="checkout__order">
-                                <h4>Your Order</h4>
-                                <div class="checkout__order__products">Products <span>Total</span></div>
-                                <ul>
-                                    @foreach(var item in Model){
-                                        <li>@item.Product.TenSp <span>@item.Total</span></li>
-                                    }
-                                    @*<li>Fresh Vegetable <span>$151.99</span></li>
-                                    <li>Organic Bananas <span>$53.99</span></li>*@
-                                </ul>
-                                <div class="checkout__order__subtotal">Subtotal <span>@TotalPrice.ToString()</span></div>
-                                <div class="checkout__order__total">Total <span>@TotalPrice.ToString()</span></div>
-                                <div class="checkout__input__checkbox">
-                                    <label for="acc-or">
-                                        Create an account?
-                                        <input type="checkbox" id="acc-or">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
-                                <p>
-                                    Lorem ipsum dolor sit amet, consectetur adip elit, sed do eiusmod tempor incididunt
-                                    ut labore et dolore magna aliqua.
-                                </p>
-                                <div class="checkout__input__checkbox">
-                                    <label for="payment">
-                                        Check Payment
-                                        <input type="checkbox" id="payment">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
-                                <div class="checkout__input__checkbox">
-                                    <label for="paypal">
-                                        Paypal
-                                        <input type="checkbox" id="paypal">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
-                                <button type="submit" class="site-btn">PLACE ORDER</button>
+
+                               <h4>Your Order</h4>+
+                               <div class="checkout__order__products">Products <span>Total</span></div>
+                               <ul>
+                                   @foreach(var item in Model){
+                                     <li>@item.Product.TenSp <span>@item.Total</span></li>
+                                   }
+                                            @*<li>Fresh Vegetable <span>$151.99</span></li>
+                                            <li>Organic Bananas <span>$53.99</span></li>*@
+                                   </ul>
+                                   <div class="checkout__order__subtotal">Subtotal <span>@TotalPrice.ToString()</span></div>
+                                   <div class="checkout__order__total">Total <span>@TotalPrice.ToString()</span></div>
+                                   <div class="checkout__input__checkbox">
+                                            <label for="acc-or">
+                                                Create an account?
+                                                <input type="checkbox" id="acc-or">
+                                                <span class="checkmark"></span>
+                                            </label>
+                                        </div>
+                                   <p>
+                                            Lorem ipsum dolor sit amet, consectetur adip elit, sed do eiusmod tempor incididunt
+                                            ut labore et dolore magna aliqua.
+                                        </p>
+                                   <div class="checkout__input__checkbox">
+                                            <label for="payment">
+                                                Check Payment
+                                                <input type="checkbox" id="payment">
+                                                <span class="checkmark"></span>
+                                            </label>
+                                        </div>
+                                   <div class="checkout__input__checkbox">
+                                            <label for="paypal">
+                                                Paypal
+                                                <input type="checkbox" id="paypal">
+                                                <span class="checkmark"></span>
+                                            </label>
+                                        </div>
+                                   <button type="submit" class="site-btn">PLACE ORDER</button>
                             </div>
                         </div>
                     </div>
@@ -390,6 +399,9 @@
                             <a href="#"><i class="fa fa-pinterest"></i></a>
                         </div>
                     </div>
+                </div>
+                <div>
+                    <iframe style="width:1100px" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.6557511066408!2d106.68001391152454!3d10.760992059432095!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f1b8e6575c3%3A0x48d253bde1931e59!2zxJDhuqFpIEjhu41jIFPGsCBQaOG6oW0gLSAyODAgQW4gRMawxqFuZyBWxrDGoW5n!5e0!3m2!1sen!2s!4v1702558723048!5m2!1sen!2s" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
             </div>
             <div class="row">

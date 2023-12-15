@@ -11,6 +11,7 @@ using X.PagedList;
 
 namespace ValiStore.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         QLBanVaLiContext db = new QLBanVaLiContext();
@@ -21,7 +22,7 @@ namespace ValiStore.Controllers
             _logger = logger;
         }
 
-        [Authorize]
+        
 
         public IActionResult Index(int? page)
         {

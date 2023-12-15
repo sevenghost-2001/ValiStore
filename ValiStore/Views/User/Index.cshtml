@@ -1,0 +1,134 @@
+﻿@using System.Security.Claims
+
+@model List<KhachHang_ChiTietHDB>
+@{
+    var usernameClaim = User.FindFirst(ClaimTypes.Name);
+    var username = usernameClaim != null ? usernameClaim.Value : "Guest";
+    Layout = "~/Views/Shared/User_layout.cshtml";
+    //var user = Model.Where(u => u.Username == username).ToList();
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+ <h2> Thông Tin Khách Hàng</h2>
+<table class="table">
+    <thead>
+        <tr>
+            
+            <th>
+                    <p>Tên Khách Hàng</p>
+            </th>
+            <th>
+                    <p>Ngày Sinh</p>
+            </th>
+            <th>
+                    <p>Số Điện Thoại</p>
+            </th>
+            <th>
+                    <p>Địa Chỉ</p>
+            </th>
+            <th>
+                    <p>Ghi Chú</p>
+            </th>
+            <th>
+                    <p>UserName</p>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody style ="background:antiquewhite; border:1px solid black">
+            @if(Model.FirstOrDefault().khachHang.Username != null)
+            {
+                var user1 = Model.FirstOrDefault().khachHang;
+                <tr>
+                    <td>
+                        <p>@user1.TenKhachHang</p>
+                    </td>
+                    <td>
+                        <p>@user1.NgaySinh</p>
+                    </td>
+                    <td>
+                        <p>@user1.SoDienThoai</p>
+                    </td>
+                    <td>
+                        <p>@user1.DiaChi</p>
+                    </td>
+                    <td>
+                        <p>@user1.GhiChu</p>
+                    </td>
+@*                     <td>
+                        <p>@user1.UsernameNavigation.Username</p>
+                    </td> *@
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@user1.MaKhachHang">Edit</a> 
+                    </td>
+                </tr>
+            } 
+    </tbody>
+</table>
+<hr />
+<h2>Thông Tin Đơn hàng Đã Mua</h2>
+    <table class="table">
+        <thead>
+            <tr>
+
+                <th>
+                    <p>Mã Hóa Đơn</p>
+                </th>
+                <th>
+                    <p>Mã Chi Tiết Sản Phẩm</p>
+                </th>
+                <th>
+                    <p>Số Lượng Bán</p>
+                </th>
+                <th>
+                    <p>Đơn Giá bán</p>
+                </th>
+                <th>
+                    <p>Ghi Chú</p>
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody style="background:antiquewhite; border:1px solid black">
+            @if (Model.FirstOrDefault().hoaDonBan != null)
+            {
+                int i = 0;
+                @foreach ( var viewmodel in Model)
+                {
+                    i++;
+                    <td style="background-color:#f2edf3">
+                        <h5>Đơn Hàng Số @i</h5>
+                    </td>
+                    @foreach (var detail in viewmodel.ChiTietHdbs)
+                    {    
+                        <tr>
+                        <td>
+                            <p>@detail.MaHoaDon</p>
+                        </td>
+                        <td>
+                            <p>@detail.MaChiTietSp</p>
+                        </td>
+                        <td>
+                            <p>@detail.SoLuongBan</p>
+                        </td>
+                        <td>
+                            <p>@detail.DonGiaBan</p>
+                        </td>
+                        <td>
+                            <p>@detail.GhiChu</p>
+                        </td>
+                    </tr>
+                    }
+                }
+            }
+        </tbody>
+    </table>
+</body>
+</html>

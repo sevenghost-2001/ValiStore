@@ -1,0 +1,79 @@
+﻿@using X.PagedList.Mvc.Core
+@using ValiStore.Models
+@model X.PagedList.IPagedList<TChiTietHdb>
+
+@{
+    ViewData["Title"] = "ChiTietDonHang";
+    Layout = "~/Areas/Admin/Views/Shared/LayoutAdmin.cshtml";
+}
+@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHelpers
+<h1>ChiTietDonHang</h1>
+
+<div>
+    <h4>TChiTietHdb</h4>
+    <hr />
+<table class="table">
+    <thead>
+        <tr class="table-warning">
+            <th>
+                Mã Hóa Đơn
+            </th>
+            <th>
+                Mã Chi Tiết Sản Phẩm
+            </th>
+            <th>
+                Số Lượng bán
+            </th>
+            <th>
+                Đơn Giá Bán
+            </th>
+            
+            <th>
+                Giảm Giá
+            </th>
+            <th>
+                Ghi Chú
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int i = 0;
+            String @cls = "table-success";
+        }
+@foreach (var item in Model) {
+            i = i + 1;
+            cls = "table-success";
+            if (i % 2 == 0)
+            {
+                cls = "table-primary";
+            }
+        <tr class="@cls">
+            <td>
+                @Html.DisplayFor(modelItem => item.MaHoaDon)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaChiTietSp)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SoLuongBan)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DonGiaBan)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GiamGia)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GhiChu)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

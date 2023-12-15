@@ -164,10 +164,20 @@ namespace ValiStore.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult SuaDonHang(string maHoaDon)
         {
-            ViewBag.MaKhachHang = new SelectList(db.TKhachHangs.ToList(), "MaKhanhHang", "TenKhachHang");
+            ViewBag.MaKhachHang = new SelectList(db.TKhachHangs.ToList(), "MaKhachHang", "TenKhachHang");
             ViewBag.MaNhanVien = new SelectList(db.TNhanViens.ToList(), "MaNhanVien", "TenNhanVien");
             var sanPham = db.THoaDonBans.Find(maHoaDon);
             return View(sanPham);
+        }
+        [Route("ChiTietDonHang")]
+        [HttpGet]
+        public IActionResult ChiTietDonHang(string maHoaDon, int ?page)
+        {
+            int pageSize = 12;
+            int pageNumber = page == null || page < 0 ? 1 : page.Value;
+            var chiTietHoaDon = db.TChiTietHdbs.Where(hd => hd.MaHoaDon == maHoaDon).ToList();
+            PagedList<TChiTietHdb> lst = new PagedList<TChiTietHdb>(chiTietHoaDon, pageNumber, pageSize);
+            return View(lst);
         }
         [Route("SuaDonHang")]
         [HttpPost]

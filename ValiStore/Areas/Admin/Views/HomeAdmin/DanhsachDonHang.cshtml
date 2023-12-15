@@ -33,9 +33,6 @@
             <th>
                 Mã Khách Hàng
             </th>
-            <th>
-                Mã Nhân Viên
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -68,11 +65,8 @@
                 @Html.DisplayFor(modelItem => item.MaKhachHang)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.MaNhanVien)
-            </td>
-            <td>
                 <a asp-action="SuaDonHang" asp-route-maHoaDon="@item.MaHoaDon">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.MaHoaDon">Details</a> |
+                <a asp-action="ChiTietDonHang" asp-route-maHoaDon="@item.MaHoaDon">Details</a> |
                 <a asp-action="XoaDonHang" asp-route-maHoaDon="@item.MaHoaDon">Delete</a>
             </td>
         </tr>
